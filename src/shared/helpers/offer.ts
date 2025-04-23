@@ -1,50 +1,36 @@
-import { Offer, ProposerType } from '../types/index.js';
+import { Offer, OfferType } from '../types/index.js';
 
 export function createOffer(offerData: string): Offer {
   const [
     title,
     description,
-    postDate,
-    city,
-    previewImage,
-    images,
-    premium,
-    favorites,
-    rating,
+    createdDate,
+    image,
     type,
-    numbersOfRoom,
-    numberOfGests,
     price,
-    facilities,
-    firstName,
-    lastName,
+    categories,
+    firstname,
+    lastname,
     email,
-    avatarPath,
-    password,
-    proposerType
+    avatarPath
   ] = offerData.replace('\n', '').split('\t');
 
-  const proposer = {
-    firstName, lastName, email, avatarPath, password, proposerType: proposerType as ProposerType
+  const user = {
+    email,
+    firstname,
+    lastname,
+    avatarPath
   };
 
   return {
     title,
     description,
-    postDate: postDate,
-    city,
-    previewImage,
-    images: images.split(';')
-      .map((path) => (path)),
-    premium: !!premium,
-    favorites: !!favorites,
-    rating: Number.parseInt(rating, 10),
-    type,
-    numbersOfRoom,
-    numberOfGests,
+    image,
+    user,
+    postDate: new Date(createdDate),
+    type: OfferType[type as 'Buy' | 'Sell'],
     price: Number.parseInt(price, 10),
-    facilities: facilities.split(';')
-      .map((name) => (name)),
-    proposer,
+    categories: categories.split(';')
+      .map((name) => ({name})),
   };
 }
